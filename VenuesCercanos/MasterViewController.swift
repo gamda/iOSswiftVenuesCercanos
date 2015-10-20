@@ -8,10 +8,12 @@
 
 import UIKit
 import CoreData
+import CoreLocation
 
-class MasterViewController: UITableViewController, NSFetchedResultsControllerDelegate, GetVenuesDelegate {
+class MasterViewController: UITableViewController, NSFetchedResultsControllerDelegate, GetVenuesDelegate, CLLocationManagerDelegate {
     
     var venues: [Venue]? = nil
+    var locationManager: CLLocationManager!
 
     var detailViewController: DetailViewController? = nil
     var managedObjectContext: NSManagedObjectContext? = nil
@@ -20,17 +22,20 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        self.navigationItem.leftBarButtonItem = self.editButtonItem()
+        locationManager = CLLocationManager()
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
+//        self.navigationItem.leftBarButtonItem = self.editButtonItem()
 
-        let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "insertNewObject:")
-        self.navigationItem.rightBarButtonItem = addButton
+//        let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "insertNewObject:")
+//        self.navigationItem.rightBarButtonItem = addButton
         if let split = self.splitViewController {
             let controllers = split.viewControllers
             self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
         }
         
         GetVenues.delegate = self
-        GetVenues.nearbyVenues()
+//        GetVenues.nearbyVenues()
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -68,6 +73,20 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     func receiveVenueData(venues: [Venue]) {
         self.venues = venues
         self.tableView.reloadData()
+    }
+    
+    // MARK: - CLLocationManagerDelegate
+    
+    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        if (status == .AuthorizedWhenInUse) {
+            manager.startUpdatingLocation()
+        }
+    }
+    
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        manager.stopUpdatingLocation()
+        let location = locations[locations.count - 1] // get last known location
+        GetVenues.nearbyVenues(location.coordinate.latitude, lng: location.coordinate.longitude)
     }
 
     // MARK: - Segues

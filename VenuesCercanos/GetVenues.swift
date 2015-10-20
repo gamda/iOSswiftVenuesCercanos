@@ -20,13 +20,16 @@ class GetVenues {
     
     static var delegate: GetVenuesDelegate? = nil
     
-    static func nearbyVenues() {
+    static func nearbyVenues(lat: Double, lng: Double) {
         var venues = [Venue]()
         Alamofire.request(.GET,
-                          "https://api.foursquare.com/v2/venues/search?near=MX&intent=browse&radius=500",
+                          "https://api.foursquare.com/v2/venues/search",
                           parameters: ["client_id": clientID,
                                        "client_secret": clientSecret,
-                                       "v": 20151019])
+                                       "v": 20151019,
+                                       "intent": "browse",
+                                       "radius": 500,
+                                       "ll": String(format: "%.2f,%.2f", lat, lng)])
             .responseJSON { response in
                 guard let value = response.result.value else {
                     print("Error: did not receive data")
@@ -76,6 +79,7 @@ class GetVenues {
     }
     
     private static func valueForKey(dict: [String:AnyObject], key: String) -> AnyObject? {
+        // This function helps avoid clutter 'if' statements in locationFromJSON
         guard let value = dict[key] else{
             return nil
         }
