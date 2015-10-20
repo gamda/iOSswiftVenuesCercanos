@@ -8,9 +8,10 @@
 
 import UIKit
 import CoreData
-//import GetVenues
 
-class MasterViewController: UITableViewController, NSFetchedResultsControllerDelegate {
+class MasterViewController: UITableViewController, NSFetchedResultsControllerDelegate, GetVenuesDelegate {
+    
+    var venues: [Venue]? = nil
 
     var detailViewController: DetailViewController? = nil
     var managedObjectContext: NSManagedObjectContext? = nil
@@ -27,6 +28,8 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
             let controllers = split.viewControllers
             self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
         }
+        
+        GetVenues.delegate = self
         GetVenues.nearbyVenues()
     }
 
@@ -59,6 +62,13 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
             abort()
         }
     }
+    
+    // MARK: - GetVenuesDelegate
+    
+    func receiveVenueData(venues: [Venue]) {
+        self.venues = venues
+        self.tableView.reloadData()
+    }
 
     // MARK: - Segues
 
@@ -77,12 +87,14 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     // MARK: - Table View
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return self.fetchedResultsController.sections?.count ?? 0
+//        return self.fetchedResultsController.sections?.count ?? 0
+        return 1
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let sectionInfo = self.fetchedResultsController.sections![section]
-        return sectionInfo.numberOfObjects
+//        let sectionInfo = self.fetchedResultsController.sections![section]
+//        return sectionInfo.numberOfObjects
+        return self.venues?.count ?? 0
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -113,8 +125,10 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     }
 
     func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
-        let object = self.fetchedResultsController.objectAtIndexPath(indexPath)
-        cell.textLabel!.text = object.valueForKey("timeStamp")!.description
+//        let object = self.fetchedResultsController.objectAtIndexPath(indexPath)
+//        cell.textLabel!.text = object.valueForKey("timeStamp")!.description
+        let venue = self.venues![indexPath.row]
+        cell.textLabel!.text = venue.name
     }
 
     // MARK: - Fetched results controller

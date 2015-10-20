@@ -12,9 +12,15 @@ import Alamofire
 private var clientID = "M3AW50FNGJUGETXH3MEMFN0A3GGFN2AF1RGBKGJX5R335O55"
 private var clientSecret = "FTGCJYFX4UXPQ3AZ1251ISJXYJZHDR4BLE3MFWJ1L3VHQ3P0"
 
+protocol GetVenuesDelegate {
+    func receiveVenueData(venues: [Venue])
+}
+
 class GetVenues {
     
-    static func nearbyVenues() -> [Venue] {
+    static var delegate: GetVenuesDelegate? = nil
+    
+    static func nearbyVenues() {
         var venues = [Venue]()
         Alamofire.request(.GET,
                           "https://api.foursquare.com/v2/venues/search?near=MX&intent=browse&radius=500",
@@ -37,12 +43,12 @@ class GetVenues {
                     // venue is always a dictionary, at least with the 'name' keyword
                     // so force-unwrapping is safe
                     let v = venue as! [String:AnyObject]
-                    print("in loop ", venueFromJSON(v))
                     venues.append(venueFromJSON(v))
                 }
+                if let d = delegate {
+                    d.receiveVenueData(venues)
+                }
             }
-        print("before return ", venues)
-        return venues
     }
     
     private static func venueFromJSON(venue: [String:AnyObject]) -> Venue {
