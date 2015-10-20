@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+//import GetVenues
 
 class MasterViewController: UITableViewController, NSFetchedResultsControllerDelegate {
 
@@ -26,6 +27,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
             let controllers = split.viewControllers
             self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
         }
+        GetVenues.nearbyVenues()
     }
 
     override func viewWillAppear(animated: Bool) {
