@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DetailViewController: UIViewController {
+class DetailViewController: UIViewController, DetailController {
 
     @IBOutlet weak var lblName: UILabel!
     @IBOutlet weak var lblLikes: UILabel!

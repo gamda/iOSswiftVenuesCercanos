@@ -12,7 +12,7 @@ struct Location {
     // All values are optional because they might not be in the JSON object received
     var lat: Double?
     var lng: Double?
-    var distance: Int?
+    var distance: Int? = 0
     var address: String?
     var crossStreet: String?
     var city: String?
@@ -21,7 +21,7 @@ struct Location {
     var postalCode: String?
 }
 
-class Venue {
+class Venue: Comparable {
     /*
      * Venue is a Class instead of Location because it can be passed by reference. For 
      * example from the Master view controller to the Detail view controller.
@@ -41,4 +41,12 @@ class Venue {
         self.name = name
         self.location = location
     }
+}
+
+func ==(x: Venue, y: Venue) -> Bool {
+    return x.id == y.id
+}
+
+func <(x: Venue, y: Venue) -> Bool {
+    return x.location?.distance < y.location?.distance
 }

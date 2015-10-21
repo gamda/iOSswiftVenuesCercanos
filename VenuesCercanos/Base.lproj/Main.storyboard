@@ -71,7 +71,9 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Detail" id="mOI-FS-AaM"/>
                     <connections>
-                        <outlet property="detailDescriptionLabel" destination="0XM-y9-sOw" id="deQ-Na-JPF"/>
+                        <outlet property="lblLikes" destination="PwK-It-yEd" id="bLE-1f-CEA"/>
+                        <outlet property="lblName" destination="0XM-y9-sOw" id="jcU-e2-6Na"/>
+                        <outlet property="lblShortURL" destination="J2h-Hk-21B" id="0jN-Wx-S2s"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FJe-Yq-33r" sceneMemberID="firstResponder"/>

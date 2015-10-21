@@ -51,7 +51,7 @@ class VenuesService {
                     let v = venue as! [String:AnyObject]
                     venues.append(self.venueFromJSON(v))
                 }
-                delegate.receiveVenues(venues)
+                delegate.receiveVenues(venues.sort(<))
             }
     }
     

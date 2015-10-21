@@ -8,14 +8,18 @@
 
 import Foundation
 
+protocol DetailController {
+    func configureView()
+}
+
 class DetailViewModel: VenueDelegate {
     var venue: Venue
-    var controller: DetailViewController
+    var controller: DetailController
     var name: String
     var likes: Int?
     var shortURL: String?
     
-    init(venue: Venue!, controller: DetailViewController) {
+    init(venue: Venue!, controller: DetailController) {
         self.venue = venue
         self.controller = controller
         self.name = venue.name
