@@ -9,11 +9,16 @@
 import Foundation
 import Alamofire
 
-private var clientID = "M3AW50FNGJUGETXH3MEMFN0A3GGFN2AF1RGBKGJX5R335O55"
-private var clientSecret = "FTGCJYFX4UXPQ3AZ1251ISJXYJZHDR4BLE3MFWJ1L3VHQ3P0"
+private let clientID = "M3AW50FNGJUGETXH3MEMFN0A3GGFN2AF1RGBKGJX5R335O55"
+private let clientSecret = "FTGCJYFX4UXPQ3AZ1251ISJXYJZHDR4BLE3MFWJ1L3VHQ3P0"
+private let baseURL = "https://api.foursquare.com/v2/venues/"
 
 protocol NearbyVenuesDelegate {
     func receiveVenues(venues: [Venue])
+}
+
+protocol VenueDelegate {
+    func receiveVenue(venue: Venue)
 }
 
 class VenuesService {
@@ -21,7 +26,7 @@ class VenuesService {
     static func nearbyVenues(lat: Double, lng: Double, delegate: NearbyVenuesDelegate) {
         var venues = [Venue]()
         Alamofire.request(.GET,
-                          "https://api.foursquare.com/v2/venues/search",
+                          baseURL + "search",
                           parameters: ["client_id": clientID,
                                        "client_secret": clientSecret,
                                        "v": 20151019,
@@ -29,13 +34,13 @@ class VenuesService {
                                        "radius": 500,
                                        "ll": String(format: "%.2f,%.2f", lat, lng)])
             .responseJSON { response in
-                guard let value = response.result.value else {
-                    print("Error: did not receive data")
+                guard response.result.error == nil else {
+                    print("Error fetching venues")
+                    print(response.result.error?.localizedDescription)
                     return
                 }
-                guard response.result.error == nil else {
-                    print("error fetching venues")
-                    print(response.result.error)
+                guard let value = response.result.value else {
+                    print("Error: did not receive data")
                     return
                 }
                 let answer = value["response"] as? [String:AnyObject] ?? ["venues": []]
@@ -47,6 +52,34 @@ class VenuesService {
                     venues.append(self.venueFromJSON(v))
                 }
                 delegate.receiveVenues(venues)
+            }
+    }
+    
+    static func venue(id: String, delegate: VenueDelegate) {
+        Alamofire.request(.GET,
+                           baseURL + id,
+                           parameters: ["client_id": clientID,
+                                        "client_secret": clientSecret,
+                                        "v": 20151019])
+            .responseJSON{ response in
+                guard response.result.error == nil else {
+                    print("Error fetching venue with id")
+                    print(response.result.error?.localizedDescription)
+                    return
+                }
+                guard let value = response.result.value else {
+                    print("Error: did not receive data")
+                    return
+                }
+                let answer = value["response"] as? [String:AnyObject] ?? ["venue": []]
+                let jsonVenue = answer["venue"] as! [String:AnyObject]
+                let shortURL = jsonVenue["shortURL"] as? String
+                let jsonLikes = jsonVenue["likes"] as! [String:AnyObject]
+                let likes = jsonLikes["count"] as? Int
+                let venue = venueFromJSON(jsonVenue)
+                venue.shortURL = shortURL
+                venue.likes = likes
+                delegate.receiveVenue(venue)
             }
     }
     
@@ -63,7 +96,7 @@ class VenuesService {
         if let json = jsonLocation {
             location.lat = valueForKey(json, key: "lat") as? Double
             location.lng = valueForKey(json, key: "lng") as? Double
-            location.distance = valueForKey(json, key: "distance") as? Double
+            location.distance = valueForKey(json, key: "distance") as? Int
             location.address = valueForKey(json, key: "address") as? String
             location.crossStreet = valueForKey(json, key: "crossStreet") as? String
             location.city = valueForKey(json, key: "city") as? String
@@ -75,8 +108,8 @@ class VenuesService {
     }
     
     private static func valueForKey(dict: [String:AnyObject], key: String) -> AnyObject? {
-        // This function helps avoid clutter 'if' statements in locationFromJSON
-        guard let value = dict[key] else{
+        // This function helps avoid clutter 'if let...' statements in locationFromJSON
+        guard let value = dict[key] else {
             return nil
         }
         return value

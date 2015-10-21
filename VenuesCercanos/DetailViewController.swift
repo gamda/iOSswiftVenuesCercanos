@@ -10,8 +10,9 @@ import UIKit
 
 class DetailViewController: UIViewController {
 
-    @IBOutlet weak var detailDescriptionLabel: UILabel!
-    
+    @IBOutlet weak var lblName: UILabel!
+    @IBOutlet weak var lblLikes: UILabel!
+    @IBOutlet weak var lblShortURL: UILabel!
     
     var viewModel: DetailViewModel? = nil
 
@@ -30,7 +31,7 @@ class DetailViewController: UIViewController {
     func updateViewModel() {
         if let detail = self.detailItem {
             if viewModel == nil {
-                self.viewModel = DetailViewModel(venue: detail)
+                self.viewModel = DetailViewModel(venue: detail, controller: self)
             }
             else {
                 self.viewModel!.venue = detail
@@ -40,8 +41,19 @@ class DetailViewController: UIViewController {
 
     func configureView() {
         // Update the user interface for the detail item.
-        if let label = self.detailDescriptionLabel {
+        if let label = self.lblName {
             label.text = viewModel!.name
+        }
+        if let label = self.lblLikes {
+            if let likes = viewModel!.likes {
+                label.text = "Likes: " + likes.description
+            }
+            else {
+                label.text = "Likes: N/A"
+            }
+        }
+        if let label = self.lblShortURL {
+            label.text = viewModel!.shortURL
         }
     }
 

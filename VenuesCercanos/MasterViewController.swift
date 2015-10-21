@@ -149,6 +149,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
 //        cell.textLabel!.text = object.valueForKey("timeStamp")!.description
         let venue = self.venues![indexPath.row]
         cell.textLabel!.text = venue.name
+        cell.detailTextLabel!.text = (venue.location?.distance?.description)! + " m de distancia"
     }
 
     // MARK: - Fetched results controller

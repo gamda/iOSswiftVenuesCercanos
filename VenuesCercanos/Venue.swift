@@ -12,7 +12,7 @@ struct Location {
     // All values are optional because they might not be in the JSON object received
     var lat: Double?
     var lng: Double?
-    var distance: Double?
+    var distance: Int?
     var address: String?
     var crossStreet: String?
     var city: String?
@@ -33,6 +33,8 @@ class Venue {
     var id: String?
     var name: String
     var location: Location?
+    var shortURL: String?
+    var likes: Int?
     
     init(id: String?, name: String, location: Location?) {
         self.id = id
