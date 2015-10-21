@@ -16,13 +16,16 @@ class MasterViewController: UITableViewController, MasterController {
     var detailViewController: DetailViewController? = nil
     var managedObjectContext: NSManagedObjectContext? = nil
 
-
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         self.title = "Venues Cercanos"
         self.viewModel = MasterViewModel(controller: self, context: managedObjectContext!)
         self.tableView.dataSource = self.viewModel
+        let btnRefresh = UIBarButtonItem(barButtonSystemItem: .Refresh,
+                                         target: self.viewModel,
+                                         action: "refresh")
+        self.navigationItem.rightBarButtonItem = btnRefresh
 //        self.navigationItem.leftBarButtonItem = self.editButtonItem()
 
 //        let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "insertNewObject:")
@@ -47,6 +50,23 @@ class MasterViewController: UITableViewController, MasterController {
     
     func reloadData() {
         self.tableView.reloadData()
+    }
+    
+    var alert: UIAlertController? = nil
+    
+    func alert(title: String, message: String, showButton: Bool) {
+        self.alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+        if showButton {
+            let cancelAction = UIAlertAction(title: "OK", style: .Default) { (_) in }
+            alert!.addAction(cancelAction)
+        }
+        self.presentViewController(alert!, animated: true, completion: nil)
+    }
+    
+    func dismissAlert() {
+        if let alert = self.alert {
+            alert.dismissViewControllerAnimated(true, completion: nil)
+        }
     }
 
     // MARK: - Segues

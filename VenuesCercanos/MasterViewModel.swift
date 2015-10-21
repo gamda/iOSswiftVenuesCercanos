@@ -12,11 +12,14 @@ import CoreLocation
 import CoreData
 
 protocol MasterController {
-    func reloadData() 
+    func reloadData()
+    func alert(title: String, message: String, showButton: Bool)
+    func dismissAlert()
 }
 
 class MasterViewModel: NSObject, UITableViewDataSource, CLLocationManagerDelegate, NSFetchedResultsControllerDelegate, NearbyVenuesDelegate {
     
+    var canUseLocationServices: Bool = false
     var venues: [Venue]? = nil
     var controller: MasterController
     var locationManager: CLLocationManager!
@@ -31,11 +34,26 @@ class MasterViewModel: NSObject, UITableViewDataSource, CLLocationManagerDelegat
         locationManager.requestWhenInUseAuthorization()
     }
     
+    func refresh() {
+        if canUseLocationServices {
+            locationManager.requestLocation()
+            self.controller.alert("Un momento",
+                                message: "Actualizando venues con tu ubicación",
+                                showButton: false)
+        }
+        else {
+            self.controller.alert("Ubicación",
+                                message: "El app necesita acceder a tu ubicación para mostrar los venues cercanos",
+                                showButton: true)
+        }
+    }
+    
     // MARK: - NearbyVenuesDelegate
     
     func receiveVenues(venues: [Venue]) {
         self.venues = venues
         self.controller.reloadData()
+        self.controller.dismissAlert()
     }
     
     // MARK: - UITableViewDataSource
@@ -73,16 +91,21 @@ class MasterViewModel: NSObject, UITableViewDataSource, CLLocationManagerDelegat
     
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         if (status == .AuthorizedWhenInUse) {
-            manager.startUpdatingLocation()
+            canUseLocationServices = true
+            self.refresh()
         }
     }
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         manager.stopUpdatingLocation()
-        let location = locations[locations.count - 1] // get last known location
+        let location = locations[0]
         VenuesService.nearbyVenues(location.coordinate.latitude,
             lng: location.coordinate.longitude,
             delegate: self)
+    }
+    
+    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
+        print("Error: ", error)
     }
     
     func insertNewObject(sender: AnyObject) {
