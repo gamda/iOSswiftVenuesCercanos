@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 import CoreLocation
 
-class MasterViewController: UITableViewController, NSFetchedResultsControllerDelegate, GetVenuesDelegate, CLLocationManagerDelegate {
+class MasterViewController: UITableViewController, NSFetchedResultsControllerDelegate, NearbyVenuesDelegate, CLLocationManagerDelegate {
     
     var venues: [Venue]? = nil
     var locationManager: CLLocationManager!
@@ -34,9 +34,6 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
             let controllers = split.viewControllers
             self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
         }
-        
-        GetVenues.delegate = self
-//        GetVenues.nearbyVenues()
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -87,7 +84,9 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         manager.stopUpdatingLocation()
         let location = locations[locations.count - 1] // get last known location
-        GetVenues.nearbyVenues(location.coordinate.latitude, lng: location.coordinate.longitude)
+        VenuesService.nearbyVenues(location.coordinate.latitude,
+                                   lng: location.coordinate.longitude,
+                                   delegate: self)
     }
 
     // MARK: - Segues
