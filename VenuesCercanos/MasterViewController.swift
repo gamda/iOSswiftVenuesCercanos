@@ -54,12 +54,10 @@ class MasterViewController: UITableViewController, MasterController {
     
     var alert: UIAlertController? = nil
     
-    func alert(title: String, message: String, showButton: Bool) {
+    func alert(title: String, message: String) {
         self.alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-        if showButton {
-            let cancelAction = UIAlertAction(title: "OK", style: .Default) { (_) in }
-            alert!.addAction(cancelAction)
-        }
+        let cancelAction = UIAlertAction(title: "OK", style: .Default) { (_) in }
+        alert!.addAction(cancelAction)
         self.presentViewController(alert!, animated: true, completion: nil)
     }
     

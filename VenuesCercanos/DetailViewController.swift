@@ -56,6 +56,21 @@ class DetailViewController: UIViewController, DetailController {
             label.text = viewModel!.shortURL
         }
     }
+    
+    var alert: UIAlertController? = nil
+    
+    func alert(title: String, message: String) {
+        self.alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+        let cancelAction = UIAlertAction(title: "OK", style: .Default) { (_) in }
+        alert!.addAction(cancelAction)
+        self.presentViewController(alert!, animated: true, completion: nil)
+    }
+    
+    func dismissAlert() {
+        if let alert = self.alert {
+            alert.dismissViewControllerAnimated(true, completion: nil )
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -11,10 +11,8 @@ import UIKit
 import CoreLocation
 import CoreData
 
-protocol MasterController {
+protocol MasterController: ControllerAlertMethods {
     func reloadData()
-    func alert(title: String, message: String, showButton: Bool)
-    func dismissAlert()
 }
 
 class MasterViewModel: NSObject, UITableViewDataSource, CLLocationManagerDelegate, NSFetchedResultsControllerDelegate, NearbyVenuesDelegate {
@@ -37,14 +35,10 @@ class MasterViewModel: NSObject, UITableViewDataSource, CLLocationManagerDelegat
     func refresh() {
         if canUseLocationServices {
             locationManager.requestLocation()
-            self.controller.alert("Un momento",
-                                message: "Actualizando venues con tu ubicación",
-                                showButton: false)
         }
         else {
             self.controller.alert("Ubicación",
-                                message: "El app necesita acceder a tu ubicación para mostrar los venues cercanos",
-                                showButton: true)
+                                message: "El app necesita acceder a tu ubicación para mostrar los venues cercanos")
         }
     }
     
@@ -54,6 +48,10 @@ class MasterViewModel: NSObject, UITableViewDataSource, CLLocationManagerDelegat
         self.venues = venues
         self.controller.reloadData()
         self.controller.dismissAlert()
+    }
+    
+    func failedWithError(title: String, message: String) {
+        self.controller.alert(title, message: message)
     }
     
     // MARK: - UITableViewDataSource
@@ -105,7 +103,7 @@ class MasterViewModel: NSObject, UITableViewDataSource, CLLocationManagerDelegat
     }
     
     func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
-        print("Error: ", error)
+        self.controller.alert("Error:", message: error.localizedDescription)
     }
     
     func insertNewObject(sender: AnyObject) {

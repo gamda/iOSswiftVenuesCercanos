@@ -13,11 +13,18 @@ private let clientID = "M3AW50FNGJUGETXH3MEMFN0A3GGFN2AF1RGBKGJX5R335O55"
 private let clientSecret = "FTGCJYFX4UXPQ3AZ1251ISJXYJZHDR4BLE3MFWJ1L3VHQ3P0"
 private let baseURL = "https://api.foursquare.com/v2/venues/"
 
-protocol NearbyVenuesDelegate {
+private let errorTitle = "Error buscando venues"
+private let errorMessageForEmptyBody = "No se recibieron datos del servidor. Intenta más tarde"
+
+protocol ErrorReporting {
+    func failedWithError(title: String, message: String)
+}
+
+protocol NearbyVenuesDelegate: ErrorReporting {
     func receiveVenues(venues: [Venue])
 }
 
-protocol VenueDelegate {
+protocol VenueDelegate: ErrorReporting {
     func receiveVenue(venue: Venue)
 }
 
@@ -35,12 +42,12 @@ class VenuesService {
                                        "ll": String(format: "%.2f,%.2f", lat, lng)])
             .responseJSON { response in
                 guard response.result.error == nil else {
-                    print("Error fetching venues")
-                    print(response.result.error?.localizedDescription)
+                    delegate.failedWithError(errorTitle,
+                        message: (response.result.error?.localizedDescription)!)
                     return
                 }
                 guard let value = response.result.value else {
-                    print("Error: did not receive data")
+                    delegate.failedWithError(errorTitle, message: errorMessageForEmptyBody)
                     return
                 }
                 let answer = value["response"] as? [String:AnyObject] ?? ["venues": []]
@@ -63,12 +70,12 @@ class VenuesService {
                                         "v": 20151019])
             .responseJSON{ response in
                 guard response.result.error == nil else {
-                    print("Error fetching venue with id")
-                    print(response.result.error?.localizedDescription)
+                    delegate.failedWithError(errorTitle,
+                        message: (response.result.error?.localizedDescription)!)
                     return
                 }
                 guard let value = response.result.value else {
-                    print("Error: did not receive data")
+                    delegate.failedWithError(errorTitle, message: errorMessageForEmptyBody)
                     return
                 }
                 let answer = value["response"] as? [String:AnyObject] ?? ["venue": []]

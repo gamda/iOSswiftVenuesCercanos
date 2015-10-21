@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol DetailController {
+protocol DetailController: ControllerAlertMethods {
     func configureView()
 }
 
@@ -35,5 +35,9 @@ class DetailViewModel: VenueDelegate {
         self.likes = venue.likes
         self.shortURL = venue.shortURL
         self.controller.configureView()
+    }
+    
+    func failedWithError(title: String, message: String) {
+        self.controller.alert(title, message: message)
     }
 }
