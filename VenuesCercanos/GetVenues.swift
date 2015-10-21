@@ -13,7 +13,7 @@ private var clientID = "M3AW50FNGJUGETXH3MEMFN0A3GGFN2AF1RGBKGJX5R335O55"
 private var clientSecret = "FTGCJYFX4UXPQ3AZ1251ISJXYJZHDR4BLE3MFWJ1L3VHQ3P0"
 
 protocol GetVenuesDelegate {
-    func receiveVenueData(venues: [Venue])
+    func receiveVenues(venues: [Venue])
 }
 
 class GetVenues {
@@ -49,7 +49,7 @@ class GetVenues {
                     venues.append(venueFromJSON(v))
                 }
                 if let d = delegate {
-                    d.receiveVenueData(venues)
+                    d.receiveVenues(venues)
                 }
             }
     }

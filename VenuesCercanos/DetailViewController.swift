@@ -11,32 +11,44 @@ import UIKit
 class DetailViewController: UIViewController {
 
     @IBOutlet weak var detailDescriptionLabel: UILabel!
-
-
-    var detailItem: Venue? {
-        didSet {
-            // Update the view.
-            self.configureView()
-        }
-    }
+    
     
     var viewModel: DetailViewModel? = nil
 
+    var detailItem: Venue? {
+        didSet {
+            // Update the view model.
+            self.update()
+        }
+    }
+    
+    func update() {
+        self.updateViewModel()
+        self.configureView()
+    }
+    
+    func updateViewModel() {
+        if let detail = self.detailItem {
+            if viewModel == nil {
+                self.viewModel = DetailViewModel(venue: detail)
+            }
+            else {
+                self.viewModel!.venue = detail
+            }
+        }
+    }
+
     func configureView() {
         // Update the user interface for the detail item.
-        if let detail = self.detailItem {
-            self.viewModel = DetailViewModel(venue: detail)
-            
-            if let label = self.detailDescriptionLabel {
-                label.text = viewModel!.name
-            }
+        if let label = self.detailDescriptionLabel {
+            label.text = viewModel!.name
         }
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        self.configureView()
+        self.update()
     }
 
     override func didReceiveMemoryWarning() {

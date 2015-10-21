@@ -71,7 +71,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     
     // MARK: - GetVenuesDelegate
     
-    func receiveVenueData(venues: [Venue]) {
+    func receiveVenues(venues: [Venue]) {
         self.venues = venues
         self.tableView.reloadData()
     }
