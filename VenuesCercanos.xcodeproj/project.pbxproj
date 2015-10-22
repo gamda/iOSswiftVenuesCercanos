@@ -16,11 +16,13 @@
 		0A9AFB2D1BD5AC4800D3E79F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A9AFB2B1BD5AC4800D3E79F /* LaunchScreen.storyboard */; };
 		0A9AFB381BD5AC4800D3E79F /* VenuesCercanosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9AFB371BD5AC4800D3E79F /* VenuesCercanosTests.swift */; };
 		0A9AFB431BD5AC4800D3E79F /* VenuesCercanosUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9AFB421BD5AC4800D3E79F /* VenuesCercanosUITests.swift */; };
-		0A9AFB511BD5B4BA00D3E79F /* VenuesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9AFB501BD5B4BA00D3E79F /* VenuesService.swift */; settings = {ASSET_TAGS = (); }; };
-		0A9AFB531BD5C7F900D3E79F /* Venue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9AFB521BD5C7F900D3E79F /* Venue.swift */; settings = {ASSET_TAGS = (); }; };
-		0A9AFB551BD7461F00D3E79F /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9AFB541BD7461F00D3E79F /* DetailViewModel.swift */; settings = {ASSET_TAGS = (); }; };
-		0A9AFB571BD8111700D3E79F /* MasterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9AFB561BD8111700D3E79F /* MasterViewModel.swift */; settings = {ASSET_TAGS = (); }; };
-		0A9AFB591BD8456100D3E79F /* ControllerAlertMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9AFB581BD8456100D3E79F /* ControllerAlertMethods.swift */; settings = {ASSET_TAGS = (); }; };
+		0A9AFB511BD5B4BA00D3E79F /* VenuesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9AFB501BD5B4BA00D3E79F /* VenuesService.swift */; };
+		0A9AFB531BD5C7F900D3E79F /* Venue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9AFB521BD5C7F900D3E79F /* Venue.swift */; };
+		0A9AFB551BD7461F00D3E79F /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9AFB541BD7461F00D3E79F /* DetailViewModel.swift */; };
+		0A9AFB571BD8111700D3E79F /* MasterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9AFB561BD8111700D3E79F /* MasterViewModel.swift */; };
+		0A9AFB591BD8456100D3E79F /* ControllerAlertMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9AFB581BD8456100D3E79F /* ControllerAlertMethods.swift */; };
+		0ADACA7C1BD9763000726FB1 /* FavoritesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ADACA7B1BD9763000726FB1 /* FavoritesService.swift */; };
+		0ADACA7E1BD97CE000726FB1 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ADACA7D1BD97CE000726FB1 /* Location.swift */; };
 		A018B30BC08A08D0A56A28C0 /* Pods_VenuesCercanos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ECC36AA6AFA405D99AB2EA37 /* Pods_VenuesCercanos.framework */; };
 /* End PBXBuildFile section */
 
@@ -62,6 +64,8 @@
 		0A9AFB541BD7461F00D3E79F /* DetailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
 		0A9AFB561BD8111700D3E79F /* MasterViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterViewModel.swift; sourceTree = "<group>"; };
 		0A9AFB581BD8456100D3E79F /* ControllerAlertMethods.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllerAlertMethods.swift; sourceTree = "<group>"; };
+		0ADACA7B1BD9763000726FB1 /* FavoritesService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoritesService.swift; sourceTree = "<group>"; };
+		0ADACA7D1BD97CE000726FB1 /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		0E7649900590491351CD42BA /* Pods-VenuesCercanos.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VenuesCercanos.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VenuesCercanos/Pods-VenuesCercanos.debug.xcconfig"; sourceTree = "<group>"; };
 		B98A65AC22ECF97510EDD9A2 /* Pods-VenuesCercanos.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VenuesCercanos.release.xcconfig"; path = "Pods/Target Support Files/Pods-VenuesCercanos/Pods-VenuesCercanos.release.xcconfig"; sourceTree = "<group>"; };
 		ECC36AA6AFA405D99AB2EA37 /* Pods_VenuesCercanos.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VenuesCercanos.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -124,8 +128,10 @@
 				0A9AFB561BD8111700D3E79F /* MasterViewModel.swift */,
 				0A9AFB241BD5AC4800D3E79F /* DetailViewController.swift */,
 				0A9AFB541BD7461F00D3E79F /* DetailViewModel.swift */,
+				0ADACA7B1BD9763000726FB1 /* FavoritesService.swift */,
 				0A9AFB501BD5B4BA00D3E79F /* VenuesService.swift */,
 				0A9AFB521BD5C7F900D3E79F /* Venue.swift */,
+				0ADACA7D1BD97CE000726FB1 /* Location.swift */,
 				0A9AFB261BD5AC4800D3E79F /* Main.storyboard */,
 				0A9AFB291BD5AC4800D3E79F /* Assets.xcassets */,
 				0A9AFB2B1BD5AC4800D3E79F /* LaunchScreen.storyboard */,
@@ -353,10 +359,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A9AFB571BD8111700D3E79F /* MasterViewModel.swift in Sources */,
+				0ADACA7E1BD97CE000726FB1 /* Location.swift in Sources */,
 				0A9AFB511BD5B4BA00D3E79F /* VenuesService.swift in Sources */,
 				0A9AFB531BD5C7F900D3E79F /* Venue.swift in Sources */,
 				0A9AFB551BD7461F00D3E79F /* DetailViewModel.swift in Sources */,
 				0A9AFB591BD8456100D3E79F /* ControllerAlertMethods.swift in Sources */,
+				0ADACA7C1BD9763000726FB1 /* FavoritesService.swift in Sources */,
 				0A9AFB1E1BD5AC4800D3E79F /* AppDelegate.swift in Sources */,
 				0A9AFB211BD5AC4800D3E79F /* VenuesCercanos.xcdatamodeld in Sources */,
 				0A9AFB231BD5AC4800D3E79F /* MasterViewController.swift in Sources */,

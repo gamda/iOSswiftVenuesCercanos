@@ -7,33 +7,9 @@
 //
 
 import Foundation
-import CoreLocation
+import CoreData
 
-struct Location {
-    // All values are optional because they might not be in the JSON object received
-    var lat: Double?
-    var lng: Double?
-    var distance: Double {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        let lat = defaults.doubleForKey("lat")
-        let lng = defaults.doubleForKey("lng")
-        let userCoord = CLLocation(latitude: lat, longitude: lng)
-        let venueCoord = CLLocation(latitude: self.lat!, longitude: self.lng!)
-        
-        let zero = 0.0
-        if lat == zero || lng == zero || self.lat == zero || self.lng == zero {
-            return zero
-        }
-        
-        return userCoord.distanceFromLocation(venueCoord)
-    }
-    var address: String?
-    var crossStreet: String?
-    var city: String?
-    var state: String?
-    var country: String?
-    var postalCode: String?
-}
+
 
 class Venue: Comparable {
     /*
@@ -55,6 +31,34 @@ class Venue: Comparable {
         self.name = name
         self.location = location
     }
+    
+    func managedVenueForManagedContext(context: NSManagedObjectContext) -> NSManagedObject {
+        let entity = NSEntityDescription.entityForName("Venue", inManagedObjectContext: context)
+        let newManagedVenue = NSEntityDescription.insertNewObjectForEntityForName(entity!.name!, inManagedObjectContext: context)
+        
+        newManagedVenue.setValue(self.name, forKey: "name")
+        if let id = self.id {
+            newManagedVenue.setValue(id, forKey: "id")
+        }
+        if let location = self.location {
+            newManagedVenue.setValue(
+                location.managedLocationForManagedContext(context), forKey: "location")
+        }
+        // shortURL and likes are retrieved by detail view model so no need to save them
+        return newManagedVenue
+    }
+    
+    static func venueFromManagedObject(object: NSManagedObject) -> Venue {
+        let id = object.valueForKey("id") as? String
+        let name = object.valueForKey("name") as! String
+        var location: Location? = nil
+        let locObject = object.valueForKey("location") as? NSManagedObject
+        if let locationObject = locObject {
+            location = Location.locationFromManagedObject(locationObject)
+        }
+        return Venue(id: id, name: name, location: location)
+    }
+    
 }
 
 func ==(x: Venue, y: Venue) -> Bool {
