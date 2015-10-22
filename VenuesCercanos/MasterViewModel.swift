@@ -23,9 +23,10 @@ class MasterViewModel: NSObject, UITableViewDataSource, CLLocationManagerDelegat
     var locationManager: CLLocationManager!
     var managedObjectContext: NSManagedObjectContext
     
-    init(controller: MasterController, context: NSManagedObjectContext) {
+    init(controller: MasterController) {
         self.controller = controller
-        self.managedObjectContext = context
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate!
+        self.managedObjectContext = appDelegate.managedObjectContext
         super.init()
         locationManager = CLLocationManager()
         locationManager.delegate = self

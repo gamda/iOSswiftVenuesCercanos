@@ -7,20 +7,18 @@
 //
 
 import UIKit
-import CoreData
 
 class MasterViewController: UITableViewController, MasterController {
     
     var viewModel: MasterViewModel? = nil
 
     var detailViewController: DetailViewController? = nil
-    var managedObjectContext: NSManagedObjectContext? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         self.title = "Venues Cercanos"
-        self.viewModel = MasterViewModel(controller: self, context: managedObjectContext!)
+        self.viewModel = MasterViewModel(controller: self)
         self.tableView.dataSource = self.viewModel
         let btnRefresh = UIBarButtonItem(barButtonSystemItem: .Refresh,
                                          target: self.viewModel,
