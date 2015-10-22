@@ -83,7 +83,8 @@ class MasterViewModel: NSObject, UITableViewDataSource, CLLocationManagerDelegat
 //        cell.textLabel!.text = object.valueForKey("timeStamp")!.description
         let venue = self.venues![indexPath.row]
         cell.textLabel!.text = venue.name
-        cell.detailTextLabel!.text = (venue.location?.distance?.description)! + " m de distancia"
+        let d = String(format: "%.2f m de distancia", (venue.location?.distance)!)
+        cell.detailTextLabel!.text = d
     }
     
     // MARK: - CLLocationManagerDelegate
@@ -101,6 +102,9 @@ class MasterViewModel: NSObject, UITableViewDataSource, CLLocationManagerDelegat
         VenuesService.nearbyVenues(location.coordinate.latitude,
             lng: location.coordinate.longitude,
             delegate: self)
+        let defaults = NSUserDefaults.standardUserDefaults()
+        defaults.setDouble(location.coordinate.latitude, forKey: "lat")
+        defaults.setDouble(location.coordinate.longitude, forKey: "lng")
     }
     
     func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {

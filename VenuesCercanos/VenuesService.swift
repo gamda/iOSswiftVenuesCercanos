@@ -103,7 +103,6 @@ class VenuesService {
         if let json = jsonLocation {
             location.lat = valueForKey(json, key: "lat") as? Double
             location.lng = valueForKey(json, key: "lng") as? Double
-            location.distance = valueForKey(json, key: "distance") as? Int
             location.address = valueForKey(json, key: "address") as? String
             location.crossStreet = valueForKey(json, key: "crossStreet") as? String
             location.city = valueForKey(json, key: "city") as? String

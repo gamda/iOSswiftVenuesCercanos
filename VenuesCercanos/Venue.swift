@@ -7,12 +7,26 @@
 //
 
 import Foundation
+import CoreLocation
 
 struct Location {
     // All values are optional because they might not be in the JSON object received
     var lat: Double?
     var lng: Double?
-    var distance: Int? = 0
+    var distance: Double {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        let lat = defaults.doubleForKey("lat")
+        let lng = defaults.doubleForKey("lng")
+        let userCoord = CLLocation(latitude: lat, longitude: lng)
+        let venueCoord = CLLocation(latitude: self.lat!, longitude: self.lng!)
+        
+        let zero = 0.0
+        if lat == zero || lng == zero || self.lat == zero || self.lng == zero {
+            return zero
+        }
+        
+        return userCoord.distanceFromLocation(venueCoord)
+    }
     var address: String?
     var crossStreet: String?
     var city: String?

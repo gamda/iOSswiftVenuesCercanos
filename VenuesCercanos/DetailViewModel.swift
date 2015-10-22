@@ -33,13 +33,14 @@ class DetailViewModel: VenueDelegate {
     
     func configureMap(map: MKMapView) {
         map.showsUserLocation = true
-        let radius = Double((self.venue.location?.distance)!) * 10.0
+        let radius = (self.venue.location?.distance)! * 4.0
         let center = CLLocationCoordinate2D(latitude: (self.venue.location?.lat)!,
                                             longitude: (self.venue.location?.lng)!)
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(center, radius, radius)
         map.setRegion(coordinateRegion, animated: true)
         
-        let distance = (venue.location?.distance?.description)! + "m away"
+        let d = String(format: "%.2f m de distancia", (venue.location?.distance)!)
+        let distance = d
         let annotation = Annotation(coordinate: center, title: venue.name, subtitle: distance)
         map.addAnnotation(annotation)
     }
