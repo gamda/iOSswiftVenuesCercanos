@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import MapKit
 
 protocol DetailController: ControllerAlertMethods {
     func configureView()
@@ -30,8 +31,22 @@ class DetailViewModel: VenueDelegate {
         }
     }
     
+    func configureMap(map: MKMapView) {
+        map.showsUserLocation = true
+        let radius = Double((self.venue.location?.distance)!) * 10.0
+        let center = CLLocationCoordinate2D(latitude: (self.venue.location?.lat)!,
+                                            longitude: (self.venue.location?.lng)!)
+        let coordinateRegion = MKCoordinateRegionMakeWithDistance(center, radius, radius)
+        map.setRegion(coordinateRegion, animated: true)
+        
+        let distance = (venue.location?.distance?.description)! + "m away"
+        let annotation = Annotation(coordinate: center, title: venue.name, subtitle: distance)
+        map.addAnnotation(annotation)
+    }
+    
     func receiveVenue(venue: Venue) {
-        self.venue = venue
+        self.venue.likes = venue.likes
+        self.venue.shortURL = venue.shortURL
         self.likes = venue.likes
         self.shortURL = venue.shortURL
         self.controller.configureView()
@@ -39,5 +54,17 @@ class DetailViewModel: VenueDelegate {
     
     func failedWithError(title: String, message: String) {
         self.controller.alert(title, message: message)
+    }
+}
+
+private class Annotation: NSObject, MKAnnotation {
+    @objc let coordinate: CLLocationCoordinate2D
+    @objc let title: String?
+    @objc let subtitle: String?
+    
+    init(coordinate: CLLocationCoordinate2D, title: String, subtitle: String) {
+        self.coordinate = coordinate
+        self.title = title
+        self.subtitle = subtitle
     }
 }

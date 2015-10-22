@@ -60,6 +60,10 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="XUH-Ao-LfO">
+                                <rect key="frame" x="20" y="153" width="560" height="439"/>
+                                <animations/>
+                            </mapView>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -67,9 +71,13 @@
                             <constraint firstItem="J2h-Hk-21B" firstAttribute="leading" secondItem="svH-Pt-448" secondAttribute="leadingMargin" id="0BX-fD-xy5"/>
                             <constraint firstItem="PwK-It-yEd" firstAttribute="top" secondItem="0XM-y9-sOw" secondAttribute="bottom" constant="8" id="2j4-NM-ZhH"/>
                             <constraint firstItem="0XM-y9-sOw" firstAttribute="top" secondItem="SYR-Wa-9uf" secondAttribute="bottom" constant="8" id="8fj-0D-qYN"/>
+                            <constraint firstItem="GAO-Cl-Wes" firstAttribute="top" secondItem="XUH-Ao-LfO" secondAttribute="bottom" constant="8" id="SUx-Zd-Pay"/>
                             <constraint firstItem="0XM-y9-sOw" firstAttribute="leading" secondItem="svH-Pt-448" secondAttribute="leading" constant="20" symbolic="YES" id="Tsc-yG-G1q"/>
+                            <constraint firstItem="XUH-Ao-LfO" firstAttribute="trailing" secondItem="svH-Pt-448" secondAttribute="trailingMargin" id="cOb-3a-nNm"/>
                             <constraint firstItem="J2h-Hk-21B" firstAttribute="top" secondItem="PwK-It-yEd" secondAttribute="bottom" constant="8" id="jqG-By-M28"/>
                             <constraint firstItem="PwK-It-yEd" firstAttribute="leading" secondItem="svH-Pt-448" secondAttribute="leadingMargin" id="o2e-Iz-YGu"/>
+                            <constraint firstItem="XUH-Ao-LfO" firstAttribute="top" secondItem="J2h-Hk-21B" secondAttribute="bottom" constant="8" id="osA-Zb-Gys"/>
+                            <constraint firstItem="XUH-Ao-LfO" firstAttribute="leading" secondItem="svH-Pt-448" secondAttribute="leadingMargin" id="qon-tj-L6S"/>
                             <constraint firstAttribute="trailing" secondItem="0XM-y9-sOw" secondAttribute="trailing" constant="20" symbolic="YES" id="tHV-ZD-HQj"/>
                         </constraints>
                     </view>
@@ -79,6 +87,7 @@
                         <outlet property="lblLikes" destination="PwK-It-yEd" id="bLE-1f-CEA"/>
                         <outlet property="lblName" destination="0XM-y9-sOw" id="jcU-e2-6Na"/>
                         <outlet property="lblShortURL" destination="J2h-Hk-21B" id="0jN-Wx-S2s"/>
+                        <outlet property="map" destination="XUH-Ao-LfO" id="YA9-4e-JP0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FJe-Yq-33r" sceneMemberID="firstResponder"/>

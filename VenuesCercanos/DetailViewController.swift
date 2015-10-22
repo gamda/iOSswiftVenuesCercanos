@@ -7,12 +7,14 @@
 //
 
 import UIKit
+import MapKit
 
 class DetailViewController: UIViewController, DetailController {
 
     @IBOutlet weak var lblName: UILabel!
     @IBOutlet weak var lblLikes: UILabel!
     @IBOutlet weak var lblShortURL: UILabel!
+    @IBOutlet weak var map: MKMapView!
     
     var viewModel: DetailViewModel? = nil
 
@@ -76,6 +78,7 @@ class DetailViewController: UIViewController, DetailController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         self.update()
+        self.viewModel?.configureMap(map)
     }
 
     override func didReceiveMemoryWarning() {
