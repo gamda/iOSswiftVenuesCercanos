@@ -71,7 +71,7 @@ class MasterViewController: UITableViewController, MasterController {
         if segue.identifier == "showDetail" {
             if let indexPath = self.tableView.indexPathForSelectedRow {
 //            let object = self.fetchedResultsController.objectAtIndexPath(indexPath)
-                let venue = self.viewModel!.venues![indexPath.row]
+                let venue = self.viewModel!.venues[indexPath.row]
                 let controller = (segue.destinationViewController as! UINavigationController).topViewController as! DetailViewController
                 controller.detailItem = venue
                 controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()

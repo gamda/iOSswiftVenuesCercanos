@@ -10,6 +10,7 @@ import Foundation
 import CoreLocation
 import CoreData
 
+
 struct Location {
     // All values are optional because they might not be in the JSON object received
     var lat: Double?
@@ -35,7 +36,7 @@ struct Location {
     var country: String?
     var postalCode: String?
     
-    func managedLocationForManagedContext(context: NSManagedObjectContext) -> NSManagedObject {
+    func insertManagedLocationToManagedContext(context: NSManagedObjectContext) -> NSManagedObject {
         let entity = NSEntityDescription.entityForName("Location", inManagedObjectContext: context)
         let newManagedLocation = NSEntityDescription.insertNewObjectForEntityForName(entity!.name!, inManagedObjectContext: context)
         if let lat = self.lat {

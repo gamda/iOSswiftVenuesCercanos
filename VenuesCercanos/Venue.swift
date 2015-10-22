@@ -10,7 +10,6 @@ import Foundation
 import CoreData
 
 
-
 class Venue: Comparable {
     /*
      * Venue is a Class instead of Location because it can be passed by reference. For 
@@ -25,6 +24,7 @@ class Venue: Comparable {
     var location: Location?
     var shortURL: String?
     var likes: Int?
+    var isFavorite: Bool = false
     
     init(id: String?, name: String, location: Location?) {
         self.id = id
@@ -32,7 +32,7 @@ class Venue: Comparable {
         self.location = location
     }
     
-    func managedVenueForManagedContext(context: NSManagedObjectContext) -> NSManagedObject {
+    func insertManagedVenueToManagedContext(context: NSManagedObjectContext) -> NSManagedObject {
         let entity = NSEntityDescription.entityForName("Venue", inManagedObjectContext: context)
         let newManagedVenue = NSEntityDescription.insertNewObjectForEntityForName(entity!.name!, inManagedObjectContext: context)
         
@@ -42,7 +42,7 @@ class Venue: Comparable {
         }
         if let location = self.location {
             newManagedVenue.setValue(
-                location.managedLocationForManagedContext(context), forKey: "location")
+                location.insertManagedLocationToManagedContext(context), forKey: "location")
         }
         // shortURL and likes are retrieved by detail view model so no need to save them
         return newManagedVenue
@@ -56,7 +56,9 @@ class Venue: Comparable {
         if let locationObject = locObject {
             location = Location.locationFromManagedObject(locationObject)
         }
-        return Venue(id: id, name: name, location: location)
+        let v = Venue(id: id, name: name, location: location)
+        v.isFavorite = true
+        return v
     }
     
 }

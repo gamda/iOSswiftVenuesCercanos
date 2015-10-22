@@ -17,14 +17,15 @@ protocol MasterController: ControllerAlertMethods {
 class MasterViewModel: NSObject, UITableViewDataSource, CLLocationManagerDelegate, NearbyVenuesDelegate {
     
     var canUseLocationServices: Bool = false
-    var venues: [Venue]? = nil
+    var venues: [Venue]
     var controller: MasterController
-    var locationManager: CLLocationManager!
+    var locationManager: CLLocationManager
     
     init(controller: MasterController) {
+        self.venues = FavoritesService.favorites()
         self.controller = controller
-        super.init()
         locationManager = CLLocationManager()
+        super.init()
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
     }
@@ -42,7 +43,8 @@ class MasterViewModel: NSObject, UITableViewDataSource, CLLocationManagerDelegat
     // MARK: - NearbyVenuesDelegate
     
     func receiveVenues(venues: [Venue]) {
-        self.venues = venues
+        let temp = self.venues + venues
+        self.venues = temp.sort(<)
         self.controller.reloadData()
         self.controller.dismissAlert()
     }
@@ -65,7 +67,7 @@ class MasterViewModel: NSObject, UITableViewDataSource, CLLocationManagerDelegat
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 //        let sectionInfo = self.fetchedResultsController.sections![section]
 //        return sectionInfo.numberOfObjects
-        return self.venues?.count ?? 0
+        return self.venues.count ?? 0
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -77,7 +79,7 @@ class MasterViewModel: NSObject, UITableViewDataSource, CLLocationManagerDelegat
     func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
 //        let object = self.fetchedResultsController.objectAtIndexPath(indexPath)
 //        cell.textLabel!.text = object.valueForKey("timeStamp")!.description
-        let venue = self.venues![indexPath.row]
+        let venue = self.venues[indexPath.row]
         cell.textLabel!.text = venue.name
         let d = String(format: "%.2f m de distancia", (venue.location?.distance)!)
         cell.detailTextLabel!.text = d
