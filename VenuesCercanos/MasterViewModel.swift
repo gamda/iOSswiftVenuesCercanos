@@ -71,18 +71,25 @@ class MasterViewModel: NSObject, UITableViewDataSource, CLLocationManagerDelegat
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! CustomTableViewCell
         self.configureCell(cell, atIndexPath: indexPath)
         return cell
     }
     
-    func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
+    func configureCell(cell: CustomTableViewCell, atIndexPath indexPath: NSIndexPath) {
 //        let object = self.fetchedResultsController.objectAtIndexPath(indexPath)
 //        cell.textLabel!.text = object.valueForKey("timeStamp")!.description
         let venue = self.venues[indexPath.row]
-        cell.textLabel!.text = venue.name
+        cell.lblName!.text = venue.name
         let d = String(format: "%.2f m de distancia", (venue.location?.distance)!)
-        cell.detailTextLabel!.text = d
+        cell.lblDistance!.text = d
+        if venue.isFavorite { // !venue.isFavorite doesn't work
+            print(venue.name)
+            cell.btnSave.titleLabel!.text = "-"
+        }
+        else {
+            cell.btnSave.titleLabel!.text = "+"
+        }
     }
     
     // MARK: - CLLocationManagerDelegate
