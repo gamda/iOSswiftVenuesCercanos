@@ -53,7 +53,6 @@ class MasterViewModel: NSObject, UITableViewDataSource, CLLocationManagerDelegat
         for favorite in self.venues {
             setOfIds.insert(favorite.id!)
         }
-        print(setOfIds)
         
         let duplicatesRemoved: [Venue] =
             Array(array).filter { (v) in !(setOfIds.contains(v.id!)) }
@@ -105,7 +104,8 @@ class MasterViewModel: NSObject, UITableViewDataSource, CLLocationManagerDelegat
     @IBAction func addOrDelete(sender: UIButton) {
         let venue = self.venues[sender.tag]
         if venue.isFavorite {
-            print("remove", venue.name)
+            FavoritesService.deleteVenueWithId(venue.id!)
+            sender.setTitle("+", forState: .Normal)
         }
         else {
             FavoritesService.saveNewFavoriteVenue(venue)
