@@ -43,10 +43,23 @@ class MasterViewModel: NSObject, UITableViewDataSource, CLLocationManagerDelegat
     // MARK: - NearbyVenuesDelegate
     
     func receiveVenues(venues: [Venue]) {
-        let temp = self.venues + venues
-        self.venues = temp.sort(<)
+        self.venues = self.appendVenuesWithoutDuplicates(venues)
         self.controller.reloadData()
         self.controller.dismissAlert()
+    }
+    
+    func appendVenuesWithoutDuplicates(array: [Venue]) -> [Venue]{
+        var setOfIds: Set<String> = Set()
+        for favorite in self.venues {
+            setOfIds.insert(favorite.id!)
+        }
+        print(setOfIds)
+        
+        let duplicatesRemoved: [Venue] =
+            Array(array).filter { (v) in !(setOfIds.contains(v.id!)) }
+        self.venues = self.venues + duplicatesRemoved
+        
+        return self.venues.sort(<)
     }
     
     func failedWithError(title: String, message: String) {
@@ -65,8 +78,6 @@ class MasterViewModel: NSObject, UITableViewDataSource, CLLocationManagerDelegat
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        let sectionInfo = self.fetchedResultsController.sections![section]
-//        return sectionInfo.numberOfObjects
         return self.venues.count ?? 0
     }
     
@@ -77,18 +88,28 @@ class MasterViewModel: NSObject, UITableViewDataSource, CLLocationManagerDelegat
     }
     
     func configureCell(cell: CustomTableViewCell, atIndexPath indexPath: NSIndexPath) {
-//        let object = self.fetchedResultsController.objectAtIndexPath(indexPath)
-//        cell.textLabel!.text = object.valueForKey("timeStamp")!.description
         let venue = self.venues[indexPath.row]
         cell.lblName!.text = venue.name
         let d = String(format: "%.2f m de distancia", (venue.location?.distance)!)
         cell.lblDistance!.text = d
-        if venue.isFavorite { // !venue.isFavorite doesn't work
-            print(venue.name)
-            cell.btnSave.titleLabel!.text = "-"
+        if venue.isFavorite { // !venue.isFavorite doesn't work 0.o that's why I set + in storyboard
+            cell.btnSave.setTitle("-", forState: .Normal)
         }
         else {
-            cell.btnSave.titleLabel!.text = "+"
+            cell.btnSave.setTitle("+", forState: .Normal)
+        }
+        cell.btnSave!.tag = indexPath.row
+        cell.btnSave!.addTarget(self, action: "addOrDelete:", forControlEvents: .TouchUpInside)
+    }
+    
+    @IBAction func addOrDelete(sender: UIButton) {
+        let venue = self.venues[sender.tag]
+        if venue.isFavorite {
+            print("remove", venue.name)
+        }
+        else {
+            FavoritesService.saveNewFavoriteVenue(venue)
+            sender.setTitle("-", forState: .Normal)
         }
     }
     
