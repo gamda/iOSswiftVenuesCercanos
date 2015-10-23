@@ -9,8 +9,8 @@
 import Foundation
 import Alamofire
 
-private let clientID = "M3AW50FNGJUGETXH3MEMFN0A3GGFN2AF1RGBKGJX5R335O55"
-private let clientSecret = "FTGCJYFX4UXPQ3AZ1251ISJXYJZHDR4BLE3MFWJ1L3VHQ3P0"
+private let clientID = "hidden"
+private let clientSecret = "hidden"
 private let baseURL = "https://api.foursquare.com/v2/venues/"
 
 private let errorTitle = "Error buscando venues"
